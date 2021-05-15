@@ -1,6 +1,7 @@
 #include <ctime>
 #include <vector>
 #include "/Users/mac/stdc++.h"
+#include "sha256.h"
 using namespace std;
 
 //-------------------------------------------------Transaction data
@@ -17,18 +18,18 @@ class Block
 {
 private:
     int index;
-    size_t blockHash;
-    size_t previousHash;
-    size_t generateHash();
+    string blockHash;
+    string previousHash;
+    string generateHash();
 
 public:
-    Block(int indx, TransactionData d, size_t prevHash);
+    Block(int indx, TransactionData d, string prevHash);
 
     //Get Original Hash
-    size_t getHash();
+    string getHash();
 
     //Get Previous Hash
-    size_t getPreviousHash();
+    string getPreviousHash();
 
     //Transaction Data
     TransactionData data;
@@ -37,30 +38,32 @@ public:
     bool isHashValid();
 };
 
-Block::Block(int indx, TransactionData d, size_t prevHash)
+Block::Block(int indx, TransactionData d, string prevHash)
 {
     index = indx;
     data = d;
     previousHash = prevHash;
     blockHash = generateHash();
+    //cout<<blockHash<<endl;
 }
 //Private functions
-size_t Block::generateHash()
+string Block::generateHash()
 {
-    hash<string> hash1;
-    hash<size_t> hash2;
-    hash<size_t> finalHash;
+    // hash<string> hash1;
+    // hash<size_t> hash2;
+    // hash<size_t> finalHash;
     string toHash = to_string(data.amount) + data.recieverKey + data.senderKey + to_string(data.timestamp);
-
-    return finalHash(hash1(toHash) + hash2(previousHash));
+    
+    // return finalHash(hash1(toHash) + hash2(previousHash));
+    return sha256(toHash);
 }
 
 //Public Functions
-size_t Block::getHash()
+string Block::getHash()
 {
     return blockHash;
 }
-size_t Block::getPreviousHash()
+string Block::getPreviousHash()
 {
     return previousHash;
 }
@@ -104,8 +107,8 @@ Block Blockchain::createGensisBlock()
     d.senderKey = "None";
     d.timestamp = time(&current);
 
-    hash<int> hash1;
-    Block genesis(0, d, hash1(0));
+    //hash<int> hash1;
+    Block genesis(0, d, "0");
     return genesis;
 }
 
@@ -150,7 +153,6 @@ int main()
 {
     //Start Blockchain
     Blockchain AshCoin;
-
     //Data for first added block
     TransactionData data1;
     time_t data1Time;
