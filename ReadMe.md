@@ -3,4 +3,4 @@ In the earlier version of this Blockchain it used the standard hashing library o
 which used to create random hashes of different sizes
 But now that it uses SHA 256 hashing algorithm, it is far more secure 
 and exactly 64 characters long.
-More about it can be read on: http://www.zedwood.com/article/cpp-sha256-function
+You read more about it on: http://www.zedwood.com/article/cpp-sha256-function
